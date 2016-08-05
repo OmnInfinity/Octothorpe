@@ -61,14 +61,17 @@ namespace Octothorpe {
             return Negate(evaluation, preset);
           };
           break;
-        case 1 /* Transition.Alphabet "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" */:
+        case 1 /* Transition.Alphabet */:
           this.condition = delegate (T input) {
-            bool evaluation = false;
-
+            bool evaluation = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".Contains(input + "");
             return Negate(evaluation, preset);
           };
           break;
-        case 2 /* Transition.Digit 0123456789*/:
+        case 2 /* Transition.Digit */:
+          this.condition = delegate (T input) {
+            bool evaluation = "0123456789".Contains(input + "");
+            return Negate(evaluation, preset);
+          };
           break;
         default:
           Console.WriteLine("Transition | Not implemented");
@@ -115,7 +118,7 @@ namespace Octothorpe {
 
     // Clone onto itself
     public State Multiply(int times) {
-      aTree<Tuple<Transition, int>> stack = this.New();
+      aTree<Tuple<Transition<char>, int>> stack = this.New();
       for (int i = 1; i < times; i++) {
         stack.Insert(this.New());
       }
@@ -130,7 +133,9 @@ namespace Octothorpe {
 
     // Test an input
     public bool Run(string input) {
-      // TODO -------------------------
+      for (int i = 0; i < this.Children.Count; i++) {
+        Console.WriteLine(this.Children.ElementAt(i).GetType().ToString());
+      }
       return true;
     }
   }
@@ -157,6 +162,7 @@ namespace Octothorpe {
       State digit = new State(new Transition<char>((int) Transition<char>.Digit), (int) State.Omega);
 
       variable.Connect(alphabet.Multiply(6));
+      variable.Run(input);
 
       // And thus, there was void
       Console.ReadKey();
