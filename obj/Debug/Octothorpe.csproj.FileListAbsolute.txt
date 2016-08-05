@@ -1,0 +1,6 @@
+C:\Users\Tommy\Documents\Visual Studio 2015\Projects\Console\Octothorpe\bin\Debug\Octothorpe.exe.config
+C:\Users\Tommy\Documents\Visual Studio 2015\Projects\Console\Octothorpe\bin\Debug\Octothorpe.exe
+C:\Users\Tommy\Documents\Visual Studio 2015\Projects\Console\Octothorpe\bin\Debug\Octothorpe.pdb
+C:\Users\Tommy\Documents\Visual Studio 2015\Projects\Console\Octothorpe\obj\Debug\Octothorpe.csprojResolveAssemblyReference.cache
+C:\Users\Tommy\Documents\Visual Studio 2015\Projects\Console\Octothorpe\obj\Debug\Octothorpe.exe
+C:\Users\Tommy\Documents\Visual Studio 2015\Projects\Console\Octothorpe\obj\Debug\Octothorpe.pdb

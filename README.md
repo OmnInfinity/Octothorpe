@@ -1,2 +1,0 @@
-# Octothorpe
-A compiler framework
