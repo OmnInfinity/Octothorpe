@@ -5,7 +5,9 @@ A compiler framework written in C#
 ```
 MIT License
 
-Copyright (c) 2016 Kevin Pho
+Copyright (c) 2016 Kevin Pho (OmnInfinity) <kevinkhoapho@gmail.com>,
+                   CAMS VEX 687 "Nerd Herd",
+                   CAMS VEX 687-E
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
