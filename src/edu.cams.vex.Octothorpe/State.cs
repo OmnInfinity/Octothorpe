@@ -155,7 +155,10 @@ namespace edu.cams.vex.Octothorpe {
      * @return    this (State) for chaining
      */
     public State Connect(Cause choice, State output, Effect result) {
-      this.connections.Add(new Tuple<Cause, State, Effect>(choice, output, result));
+      Tuple<Cause, State, Effect> connection = new Tuple<Cause, State, Effect>(choice, output, result);
+      if (!this.connections.Contains(connection)) {
+        this.connections.Add(connection);
+      }
       return this;
     }
   }

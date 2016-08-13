@@ -82,7 +82,7 @@ namespace edu.cams.vex.Octothorpe {
       Effect q2 = delegate (bool input) { return (string) "Even"; };
 
       // The set of transitions between states
-      states["q0"].Connect(a, states["q1"], q0);
+      states["q0"].Connect(a, states["q1"], q0).Connect(a, states["q1"], q0);
       states["q1"].Connect(a, states["q2"], q2);
       states["q2"].Connect(a, states["q1"], null);
 

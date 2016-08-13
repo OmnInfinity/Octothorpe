@@ -77,7 +77,7 @@ namespace edu.cams.vex.Octothorpe {
       return output;
     }
 
-    public string Pad(string input, int length, string fill) {
+    public string Pad(string input, int length, string fill = "-") {
       string output = "";
 
       // Remaining characters left
@@ -96,42 +96,48 @@ namespace edu.cams.vex.Octothorpe {
       return output;
     }
 
-    public string Truncate(string input, int length, string fill) {
+    public string Truncate(string input, int length, string gap = "...") {
       string output = "";
       // Truncate the fill itself
-      if (fill.Length > Math.Abs(length)) {
-        fill = Truncate(fill, length, "");
+      if (gap.Length > Math.Abs(length)) {
+        gap = Truncate(gap, length, "");
       }
       if (input.Length > length) {
         if (Math.Sign(length) == -1) { /* Left align */
-          output = input.Substring(0, Math.Abs(length) - fill.Length) + fill;
+          output = input.Substring(0, Math.Abs(length) - gap.Length) + gap;
         }
         else { /* Right align */
-          output = fill + input.Substring(0, Math.Abs(length) - fill.Length);
+          output = gap + input.Substring(0, Math.Abs(length) - gap.Length);
         }
       }
       return output;
     }
 
-    public string Trace(State state, int level, int size = 10) {
+    public string Grid(string input, int length, string fill = "-", string gap = "...") {
       string output = "";
-      output += Repeat(Repeat(" ", size), level);
-
-      if (state.Name.Length < size) {
-        state.Name = Pad(state.Name, -size, "-");
+      if (input.Length < length) {
+        output = Pad(input, -length, "-");
       }
-      else if (state.Name.Length == size) { }
+      else if (input.Length == length) {
+        output = input;
+      }
       else {
-        state.Name = Truncate(state.Name, -size, "...");
+        output = Truncate(input, -length, "...");
       }
-      output += state.Name;
+      return output;
+    }
+
+    public string Trace(State state, int level, int length = 10) {
+      string output = "";
+      output += Repeat(Repeat(" ", length), level);
+      output += Grid(state.Name, length);
 
       foreach (Tuple<Cause, State, Effect> connection in state.Connections) {
-        output += Repeat(Repeat(" ", size), level);
-        output += "a";
+        output += "\n";
+        output += Repeat(Repeat(" ", length), level + 1);
+        output += Grid(connection.Item2.Name, length);
       }
 
-      // draw arrows
       // draw children
       // draw transitions
       return output;
