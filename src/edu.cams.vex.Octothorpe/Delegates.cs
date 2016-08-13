@@ -34,20 +34,20 @@ using Octothorpe = edu.cams.vex.Octothorpe;
 
 namespace edu.cams.vex.Octothorpe {
   /*
-   * A conditional wrapped as a delegate
-   * 
-   * @author    Kevin Pho
-   * @parameter input (string) for evaluating the conditional
-   * @return    bool as the choice of the conditional
-   */
-  delegate bool Cause(object input);
+    * A conditional wrapped as a delegate
+    * 
+    * @author    Kevin Pho
+    * @parameter input (string) for evaluating the conditional
+    * @return    bool as the choice of the conditional
+    */
+  public delegate bool Cause(object input);
 
   /*
-   * A decision wrapped as a delegate
-   * 
-   * @author    Kevin Pho
-   * @parameter input (bool) for determining the decision
-   * @return    object as the result of the decision
-   */
-  delegate object Effect(bool input);
+    * A decision wrapped as a delegate
+    * 
+    * @author    Kevin Pho
+    * @parameter input (bool) for determining the decision
+    * @return    object as the result of the decision
+    */
+  public delegate object Effect(bool input);
 }

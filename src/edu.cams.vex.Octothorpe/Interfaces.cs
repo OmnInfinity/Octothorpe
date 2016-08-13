@@ -41,7 +41,7 @@ namespace edu.cams.vex.Octothorpe {
    * @author Kevin Pho
    * @alias  Connectable
    */
-  interface Treelike<T> {
+  public interface Treelike<T> {
     /*
      * Add an identical species with a rule
      * 

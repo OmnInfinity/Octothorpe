@@ -34,10 +34,9 @@ using Octothorpe = edu.cams.vex.Octothorpe;
 
 namespace edu.cams.vex.Octothorpe {
   /*
-   * The machine (automaton)
+   * Table of states
    * 
    * @author Kevin Pho
-   * @base   Treelike<State> due to branching connections
    */
-  class Table : Dictionary<string, State> { }
+  public class Table : Dictionary<string, State> { }
 }

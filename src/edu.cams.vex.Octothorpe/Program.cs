@@ -45,13 +45,13 @@ using Octothorpe = edu.cams.vex.Octothorpe; // For localizing the workspace
 /*
  * A compiler framework
  * 
- * @author    Kevin Pho
+ * @author Kevin Pho
  */
 namespace edu.cams.vex.Octothorpe {
   /*
    * The main program for executing builds and tests
    * 
-   * @author    Kevin Pho
+   * @author Kevin Pho
    */
   class Program {
     // Execution codes
@@ -107,6 +107,14 @@ namespace edu.cams.vex.Octothorpe {
       return Program.Success;
     }
 
-    static int Update(string [] args) { return Program.Success; }
+    /*
+     * The update program for repeating
+     * 
+     * @author    Kevin Pho
+     */
+    static int Update(string [] args) {
+      // Do nothing and return success
+      return Program.Success;
+    }
   }
 }

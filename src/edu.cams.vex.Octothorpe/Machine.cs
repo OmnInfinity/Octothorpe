@@ -34,11 +34,17 @@ using Octothorpe = edu.cams.vex.Octothorpe;
 
 namespace edu.cams.vex.Octothorpe {
   /*
-   * The machine (automaton)
+   * The machine (automaton) for manipulating states
    * 
    * @author Kevin Pho
+   * @alias  Automaton
    */
-  class Machine {
+  public class Machine {
+    /*
+     * The name of the machine for identification or aesthetics
+     * 
+     * @author Kevin Pho
+     */
     string name;
     public string Name {
       get {
@@ -50,7 +56,7 @@ namespace edu.cams.vex.Octothorpe {
     }
 
     /*
-     * The machine (automaton)
+     * The states to be manipulated as data
      * 
      * @author Kevin Pho
      */
@@ -64,6 +70,11 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
+    /*
+     * The starting states to be run in a queuelike manner
+     * 
+     * @author Kevin Pho
+     */
     List<string> queue;
     public List<string> Queue {
       get {
@@ -73,11 +84,21 @@ namespace edu.cams.vex.Octothorpe {
         this.queue = value;
       }
     }
-
+    
+    /*
+     * Constructs the machine
+     * 
+     * @author    Kevin Pho
+     * @parameter name (string) for naming the machine
+     * @parameter Table (states) for pre-loading
+     * @return    this (Machine) for an object instance
+     */
     public Machine(string name, Table states) {
       this.name = name;
       this.states = states;
       this.queue = new List<string>();
+
+      // Add each state to the queue, if it is a start state
       foreach (State state in states.Values.ToList()) {
         if (state.Enterable) {
           this.queue.Add(state.Name);
@@ -85,112 +106,77 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
-    public string Repeat(string input, int multiples) {
-      string output = "";
-      for (int counter = 0; counter < multiples; counter++) {
-        output += input;
-      }
-      return output;
-    }
+    /* Todo */
+    public void Traverse() { }
 
-    public string Pad(string input, int length, string fill = " ") {
-      string output = "";
-      if (fill == "") {
-        return "";
-      }
+    /* Todo */
+    public void Accepts() { }
 
-      // Remaining characters left
-      int space = Math.Abs(length) - (input.Length % length);
-
-      // Minimum number of fills
-      int fills = (int) Math.Ceiling((double) space/fill.Length);
-      
-      // Align by direction
-      if (Math.Sign(length) == -1) { /* Left align */
-        output = input + Repeat(fill, fills).Substring(0, space);
-      }
-      else { /* Right align */
-        output = Repeat(fill, fills).Substring(0, space) + input;
-      }
-      return output;
-    }
-
-    public string Truncate(string input, int length, string gap = "...") {
-      string output = "";
-      // Truncate the fill itself
-      if (gap.Length > Math.Abs(length)) {
-        gap = Truncate(gap, length, "");
-      }
-      if (input.Length > length) {
-        if (Math.Sign(length) == -1) { /* Left align */
-          output = input.Substring(0, Math.Abs(length) - gap.Length) + gap;
-        }
-        else { /* Right align */
-          output = gap + input.Substring(0, Math.Abs(length) - gap.Length);
-        }
-      }
-      return output;
-    }
-
-    public string Grid(string input, int length, string fill = " ", string gap = "...") {
-      string output = "";
-      if (input.Length < length) {
-        output = Pad(input, -length, fill);
-      }
-      else if (input.Length == length) {
-        output = input;
-      }
-      else {
-        output = Truncate(input, -length, gap);
-      }
-      return output;
-    }
-
-    public void Traverse() {
-
-    }
-
+    /*
+     * Go through a single state and print
+     * 
+     * Recursively print out the machine.
+     * 
+     * @author    Kevin Pho
+     * @parameter state (State) for traversal
+     * @parameter level (int) for recording the current position
+     * @return    this (Machine) for an object instance
+     */
     public string Trace(State state, int level, int length = 10) {
       string output = "";
-      output += Repeat(Repeat(" ", length), level);
-      output += Grid(state.Name, length);
 
-      // Todo: Traverse and return non-cyclic tree
+      // Space out the current state and add its gridded name
+      output += " ".Repeat(length).Repeat(level);
+      output += state.Name.Grid(length);
 
+      /* Todo: Traverse and return non-cyclic tree */
+
+      // Run through the connections
       int number = 0;
-      // Todo: Update state.Connections to new tree
+      /* Todo: Update state.Connections to new tree */
       foreach (Tuple<Cause, State, Effect> connection in state.Connections) {
         // Space out to correct depth after the first one, which is on the same line
         if (number != 0) {
-          output += Repeat(Repeat(" ", length), level + 1);
+          output += " ".Repeat(length).Repeat(level + 1);
         }
 
-        // Print arrow
-        output += " ";
-        output += Repeat("-", length/2 - 3);
-        output += "> ";
+        // Print an arrow
+        output += " "; /* Spacer */
+        output += "-".Repeat((int) Math.Ceiling((double) length/2) - 3); /* Half of it plus space for the other symbols*/
+        output += "> "; /* Arrow and spacer */
 
-        // Add name
-        output += Grid(connection.Item2.Name, length);
+        // Add the name
+        output += connection.Item2.Name.Grid(length);
 
-        // If there are more
+        // If there are more, add a newline
         if (number < state.Connections.Count - 1) {
           output += "\n";
         }
         number++;
       }
 
-      // Todo: Draw transitions
+      /* Todo: Draw transitions */
       return output;
     }
 
+    /*
+     * Go through a single state and print
+     * 
+     * Override the original.
+     * 
+     * @author    Kevin Pho
+     * @return    string for an interpretation of the tree
+     */
     public override string ToString() {
       string output = "";
+
+      // Run through the start states
       int number = 0;
       foreach (string start in this.queue) {
+        // Run through the state as a root
         output += Trace(this.states[start], 0);
 
-        // If there are more
+        // If there are more, add a newline
         if (number < this.queue.Count - 1) {
           output += "\n";
         }

@@ -39,9 +39,10 @@ namespace edu.cams.vex.Octothorpe {
    * @author Kevin Pho
    * @base   Treelike<State> due to branching connections
    */
-  class State :
+  public class State :
                 Treelike<State> {
-    /* The name of the state for reference and unique identification
+    /*
+     * The name of the state for reference and unique identification
      * 
      * @author Kevin Pho
      */
@@ -55,7 +56,8 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
     
-    /* The priority of accepting this state
+    /*
+     * The priority of accepting this state
      * 
      * @author Kevin Pho
      */
@@ -69,7 +71,8 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
-    /* The output connections
+    /*
+     * The output connections
      * 
      * @author Kevin Pho
      */
@@ -83,7 +86,8 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
-    /* Whether the state is an initial state
+    /*
+     * Whether the state is an initial state
      * 
      * @author Kevin Pho
      */
@@ -97,7 +101,8 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
-    /* Whether the state is a final state
+    /*
+     * Whether the state is a final state
      * 
      * @author Kevin Pho
      */
@@ -111,7 +116,8 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
-    /* Constructs the state
+    /*
+     * Constructs the state
      * 
      * @author    Kevin Pho
      * @parameter name (string) for naming the state
@@ -126,7 +132,8 @@ namespace edu.cams.vex.Octothorpe {
       this.exitable = false;
     }
     
-    /* Makes the state an initial state
+    /*
+     * Makes the state an initial state
      * 
      * @author Kevin Pho
      * @return this (State) for chaining
@@ -136,7 +143,8 @@ namespace edu.cams.vex.Octothorpe {
       return this;
     }
 
-    /* Makes the state a final state
+    /*
+     * Makes the state a final state
      * 
      * @author Kevin Pho
      * @return this (State) for chaining
@@ -146,7 +154,8 @@ namespace edu.cams.vex.Octothorpe {
       return this;
     }
 
-    /* Connects another state
+    /*
+     * Connects another state
      * 
      * @author    Kevin Pho
      * @parameter choice (Cause) for deciding to connect
@@ -156,9 +165,12 @@ namespace edu.cams.vex.Octothorpe {
      */
     public State Connect(Cause choice, State output, Effect result) {
       Tuple<Cause, State, Effect> connection = new Tuple<Cause, State, Effect>(choice, output, result);
+
+      // If there is no repeat connection, add the connection
       if (!this.connections.Contains(connection)) {
         this.connections.Add(connection);
       }
+
       return this;
     }
   }
