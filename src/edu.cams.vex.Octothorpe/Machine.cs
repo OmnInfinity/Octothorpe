@@ -39,6 +39,16 @@ namespace edu.cams.vex.Octothorpe {
    * @author Kevin Pho
    */
   class Machine {
+    string name;
+    public string Name {
+      get {
+        return this.name;
+      }
+      set {
+        this.name = value;
+      }
+    }
+
     Table states;
     public Table States {
       get {
@@ -59,7 +69,8 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
-    public Machine(Table states) {
+    public Machine(string name, Table states) {
+      this.name = name;
       this.states = states;
       this.queue = new List<string>();
       foreach (State state in states.Values.ToList()) {
@@ -77,8 +88,11 @@ namespace edu.cams.vex.Octothorpe {
       return output;
     }
 
-    public string Pad(string input, int length, string fill = "-") {
+    public string Pad(string input, int length, string fill = " ") {
       string output = "";
+      if (fill == "") {
+        return "";
+      }
 
       // Remaining characters left
       int space = Math.Abs(length) - (input.Length % length);
@@ -113,16 +127,16 @@ namespace edu.cams.vex.Octothorpe {
       return output;
     }
 
-    public string Grid(string input, int length, string fill = "-", string gap = "...") {
+    public string Grid(string input, int length, string fill = " ", string gap = "...") {
       string output = "";
       if (input.Length < length) {
-        output = Pad(input, -length, "-");
+        output = Pad(input, -length, fill);
       }
       else if (input.Length == length) {
         output = input;
       }
       else {
-        output = Truncate(input, -length, "...");
+        output = Truncate(input, -length, gap);
       }
       return output;
     }
@@ -132,13 +146,28 @@ namespace edu.cams.vex.Octothorpe {
       output += Repeat(Repeat(" ", length), level);
       output += Grid(state.Name, length);
 
+      int number = 0;
       foreach (Tuple<Cause, State, Effect> connection in state.Connections) {
-        output += "\n";
-        output += Repeat(Repeat(" ", length), level + 1);
+        // Space out to correct depth after the first one, which is on the same line
+        if (number != 0) {
+          output += Repeat(Repeat(" ", length), level + 1);
+        }
+
+        // Print arrow
+        output += " ";
+        output += Repeat("-", length/2 - 3);
+        output += "> ";
+
+        // Add name
         output += Grid(connection.Item2.Name, length);
+
+        // If there are more
+        if (number < state.Connections.Count - 1) {
+          output += "\n";
+        }
+        number++;
       }
 
-      // draw children
       // draw transitions
       return output;
     }
