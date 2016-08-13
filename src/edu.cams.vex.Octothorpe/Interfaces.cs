@@ -33,8 +33,26 @@ using System.Threading.Tasks;
 using Octothorpe = edu.cams.vex.Octothorpe;
 
 namespace edu.cams.vex.Octothorpe {
-  /* Connectable */
+  /*
+   * A species that connects to the same species
+   * 
+   * The connections can be chained. The tree can be connected to other trees, acting as branches.
+   * 
+   * @author Kevin Pho
+   * @alias  Connectable
+   */
   interface Treelike<T> {
-    T Connect(T output, Rule rule);
+    /*
+     * Add an identical species with a rule
+     * 
+     * A specific type must be specified as the first generic.
+     * 
+     * @author    Kevin Pho
+     * @parameter choice (Cause) for controlling a state traversal
+     * @parameter output (T) for adding an output species
+     * @parameter result (Effect) for following up a state traversal
+     * @return    T as the evaluation of the conditional
+     */
+    T Connect(Cause choice, T output, Effect result);
   }
 }

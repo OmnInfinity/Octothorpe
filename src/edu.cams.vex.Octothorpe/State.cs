@@ -33,8 +33,18 @@ using System.Threading.Tasks;
 using Octothorpe = edu.cams.vex.Octothorpe;
 
 namespace edu.cams.vex.Octothorpe {
+  /*
+   * The individual states
+   * 
+   * @author Kevin Pho
+   * @base   Treelike<State> due to branching connections
+   */
   class State :
-        Treelike<State> {
+                Treelike<State> {
+    /* The name of the state for reference and unique identification
+     * 
+     * @author Kevin Pho
+     */
     string name;
     public string Name {
       get {
@@ -44,9 +54,27 @@ namespace edu.cams.vex.Octothorpe {
         this.name = value;
       }
     }
+    
+    /* The priority of accepting this state
+     * 
+     * @author Kevin Pho
+     */
+    int priority;
+    public int Priority {
+      get {
+        return this.priority;
+      }
+      set {
+        this.priority = value;
+      }
+    }
 
-    List<Tuple<State, Rule>> connections;
-    public List<Tuple<State, Rule>> Connections {
+    /* The output connections
+     * 
+     * @author Kevin Pho
+     */
+    List<Tuple<Cause, State, Effect>> connections;
+    public List<Tuple<Cause, State, Effect>> Connections {
       get {
         return this.connections;
       }
@@ -55,6 +83,10 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
+    /* Whether the state is an initial state
+     * 
+     * @author Kevin Pho
+     */
     bool enterable;
     public bool Enterable {
       get {
@@ -65,6 +97,10 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
+    /* Whether the state is a final state
+     * 
+     * @author Kevin Pho
+     */
     bool exitable;
     public bool Exitable {
       get {
@@ -75,47 +111,55 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
+    /* Constructs the state
+     * 
+     * @author    Kevin Pho
+     * @parameter name (string) for naming the state
+     * @parameter priority (int) for solving ambiguity in accept states
+     * @return    this (State) for an object instance
+     */
     public State(string name, int priority = 0) {
       this.name = name;
+      this.priority = priority;
+      this.connections = new List<Tuple<Cause, State, Effect>>();
+      this.enterable = false;
+      this.exitable = false;
     }
-
+    
+    /* Makes the state an initial state
+     * 
+     * @author Kevin Pho
+     * @return this (State) for chaining
+     */
     public State Start() {
       this.enterable = true;
       return this;
     }
 
+    /* Makes the state a final state
+     * 
+     * @author Kevin Pho
+     * @return this (State) for chaining
+     */
     public State End() {
       this.exitable = true;
       return this;
     }
 
-    public State Connect(State output, Rule rule) {
-      // If this is not a final accept state
+    /* Connects another state
+     * 
+     * @author    Kevin Pho
+     * @parameter choice (Cause) for deciding to connect
+     * @parameter output (State) for adding the state
+     * @parameter result (Effect) for doing something
+     * @return    this (State) for chaining
+     */
+    public State Connect(Cause choice, State output, Effect result) {
+      // If this is not a final state (i.e. allows connections)
       if (!this.exitable) {
-        this.connections.Add(new Tuple<State, Rule>(output, rule));
+        this.connections.Add(new Tuple<Cause, State, Effect>(choice, output, result));
       }
       return this;
-    }
-
-    public override string ToString() {
-      string output = this.name;
-      // Start with roots
-      if (this.enterable) {
-        foreach (Tuple<State, Rule> connection in this.connections) {
-          output += " -> ";
-          // Recurse, but allow non-roots
-          if (!connection.Item1.Enterable) {
-            connection.Item1.Enterable = true;
-            output += connection.Item1.ToString();
-            connection.Item1.Enterable = false;
-          }
-          else {
-            output += connection.Item1.ToString();
-          }
-          output += "\n";
-        }
-      }
-      return output;
     }
   }
 }

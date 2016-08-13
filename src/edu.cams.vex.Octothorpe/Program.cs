@@ -24,50 +24,82 @@
  * SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+/*
+ * The general imports
+ * 
+ * @author Kevin Pho
+ */
+using System; // For input/output
+using System.Collections.Generic; // For collections
+using System.Linq; // For selection
+using System.Text; // For text manipulation
+using System.Threading.Tasks; // For multitasking
 
-using Octothorpe = edu.cams.vex.Octothorpe;
+/*
+ * The local imports
+ * 
+ * @author    Kevin Pho
+ */
+using Octothorpe = edu.cams.vex.Octothorpe; // For localizing the workspace
 
+/*
+ * A compiler framework
+ * 
+ * @author    Kevin Pho
+ */
 namespace edu.cams.vex.Octothorpe {
+  /*
+   * The main program for executing builds and tests
+   * 
+   * @author    Kevin Pho
+   */
   class Program {
     // Execution codes
     public static int Success = 0;
+    public static int Failure = 1;
 
     static int Main(string[] args) {
-      /* And then, there was light */
+      /* And then,
+       * there was light */
+
       Console.WriteLine("Octothorpe by OmnInfinity");
 
-      /* A world had been made; from creation to destruction */
-      // Tokenizer for lexical analysis
-      Graph<State> States = new Graph<State> {
+      /* A world had been made;
+       * from creation to destruction */
+
+      /* Tokenizer for lexical analysis */
+      
+      // The states to travel between
+      Table states = new Table() {
         { "q0", new State("q0").Start().End() },
         { "q1", new State("q1")               },
         { "q2", new State("q2")        .End() },
       };
 
-      Rules<State> Transitions = new Rules<State>() {
-        { new Transition("q0", "a", "q1") },
-        { new Transition("q1", "a", "q2") },
-        { new Transition("q2", "a", "q1") },
-      };
+      // The set of causes and effects for states
+      Cause a = delegate (object input) { return "a".Contains((string) input); };
+      Effect q0 = delegate (bool input) { return (string) "No input"; };
+      Effect q2 = delegate (bool input) { return (string) "Even"; };
 
-      Transitions.Establish(ref States);
+      // The set of transitions between states
+      states["q0"].Connect(a, states["q1"], q0);
+      states["q1"].Connect(a, states["q2"], q2);
+      states["q2"].Connect(a, states["q1"], null);
 
-      States["q0"].Connect(States["q1"], delegate(string input) { return true; });
-      States["q0"].ToString();
+      // The constructed state automaton
+      Machine token = new Machine(states);
+      Console.WriteLine(token.ToString());
+      // token.Accepts("");
+      // token.Accepts("a");
+      // token.Accepts("aa");
 
-      Graph<State> Machine = States;
-      Machine.Accepts("");
-      Machine.Accepts("a");
-      Machine.Accepts("aa");
+      /* And thus,
+       * there was void */
 
-      /* And thus, there was void */
       Console.ReadKey();
       return Program.Success;
     }
+
+    static int Update(string [] args) { return Program.Success; }
   }
 }

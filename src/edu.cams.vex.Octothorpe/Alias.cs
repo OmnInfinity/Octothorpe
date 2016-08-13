@@ -1,4 +1,4 @@
-/*
+﻿/*
  * MIT License
  * 
  * Copyright (c) 2016 Kevin Pho (OmnInfinity) <kevinkhoapho@gmail.com>,
@@ -33,53 +33,11 @@ using System.Threading.Tasks;
 using Octothorpe = edu.cams.vex.Octothorpe;
 
 namespace edu.cams.vex.Octothorpe {
-  class Transition {
-    string input;
-    public string Input {
-      get {
-        return this.input;
-      }
-      set {
-        this.input = value;
-      }
-    }
-
-    Rule rule;
-    public Rule Rule {
-      get {
-        return this.rule;
-      }
-      set {
-        this.rule = value;
-      }
-    }
-
-    string output;
-    public string Output {
-      get {
-        return this.output;
-      }
-      set {
-        this.output = value;
-      }
-    }
-
-    public Transition(string input, string rule, string output) {
-      this.input = input;
-      this.rule = Convert(rule);
-      this.output = output;
-    }
-
-    public Transition(string input, Rule rule, string output) {
-      this.input = input;
-      this.rule = rule;
-      this.output = output;
-    }
-
-    public Rule Convert(string rule) {
-      return delegate (string input) {
-        return rule.Contains(input);
-      };
-    }
-  }
+  /*
+   * The machine (automaton)
+   * 
+   * @author Kevin Pho
+   * @base   Treelike<State> due to branching connections
+   */
+  class Table : Dictionary<string, State> { }
 }

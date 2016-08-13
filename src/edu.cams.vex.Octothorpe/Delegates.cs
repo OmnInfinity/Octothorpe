@@ -33,5 +33,21 @@ using System.Threading.Tasks;
 using Octothorpe = edu.cams.vex.Octothorpe;
 
 namespace edu.cams.vex.Octothorpe {
-  delegate bool Rule(string input);
+  /*
+   * A conditional wrapped as a delegate
+   * 
+   * @author    Kevin Pho
+   * @parameter input (string) for evaluating the conditional
+   * @return    bool as the choice of the conditional
+   */
+  delegate bool Cause(object input);
+
+  /*
+   * A decision wrapped as a delegate
+   * 
+   * @author    Kevin Pho
+   * @parameter input (bool) for determining the decision
+   * @return    object as the result of the decision
+   */
+  delegate object Effect(bool input);
 }
