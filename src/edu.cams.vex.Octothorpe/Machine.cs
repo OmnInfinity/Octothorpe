@@ -49,6 +49,11 @@ namespace edu.cams.vex.Octothorpe {
       }
     }
 
+    /*
+     * The machine (automaton)
+     * 
+     * @author Kevin Pho
+     */
     Table states;
     public Table States {
       get {
@@ -141,12 +146,19 @@ namespace edu.cams.vex.Octothorpe {
       return output;
     }
 
+    public void Traverse() {
+
+    }
+
     public string Trace(State state, int level, int length = 10) {
       string output = "";
       output += Repeat(Repeat(" ", length), level);
       output += Grid(state.Name, length);
 
+      // Todo: Traverse and return non-cyclic tree
+
       int number = 0;
+      // Todo: Update state.Connections to new tree
       foreach (Tuple<Cause, State, Effect> connection in state.Connections) {
         // Space out to correct depth after the first one, which is on the same line
         if (number != 0) {
@@ -168,7 +180,7 @@ namespace edu.cams.vex.Octothorpe {
         number++;
       }
 
-      // draw transitions
+      // Todo: Draw transitions
       return output;
     }
 

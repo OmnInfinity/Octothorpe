@@ -62,6 +62,7 @@ namespace edu.cams.vex.Octothorpe {
       /* And then,
        * there was light */
 
+      // Print title
       Console.WriteLine("Octothorpe by OmnInfinity");
 
       /* A world had been made;
@@ -88,15 +89,20 @@ namespace edu.cams.vex.Octothorpe {
 
       // The constructed state automaton
       Machine token = new Machine("Token", states);
+
+      // Print out tree
       Console.WriteLine(token.Name + ":");
       Console.WriteLine(token.ToString());
+
+      // Test strings through state automaton
       // token.Accepts("");
       // token.Accepts("a");
       // token.Accepts("aa");
 
       /* And thus,
        * there was void */
-
+      
+      // Pause and return success
       Console.ReadKey();
       return Program.Success;
     }
